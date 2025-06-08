@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "brand": {
+      "type": "string"
+    },
+    "domain": {
+      "type": "string",
+      "format": "uri"
+    },
+    "logo": {
+      "type": "string",
+      "format": "uri"
+    },
+    "tagline": {
+      "type": "string",
+      "maxLength": 160
+    },
+    "siteName": {
+      "type": "string"
+    },
+    "searchParam": {
+      "type": "string",
+      "pattern": "^\\?[^=]+=?$"
+    },
+    "social": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
+    },
+    "heroImg": {
+      "type": "string",
+      "format": "uri"
+    },
+    "lang": {
+      "type": "string",
+      "enum": [
+        "en",
+        "es",
+        "fr",
+        "de",
+        "it",
+        "pt",
+        "ru",
+        "ja",
+        "zh",
+        "ar",
+        "hi"
+      ]
+    }
+  },
+  "required": [
+    "brand",
+    "domain",
+    "logo",
+    "tagline",
+    "siteName",
+    "searchParam",
+    "lang"
+  ],
+  "additionalProperties": false
+}

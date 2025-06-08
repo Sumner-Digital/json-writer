@@ -1,0 +1,24 @@
+{
+  "type": "HorizontalLayout",
+  "elements": [
+    {
+      "type": "VerticalLayout",
+      "elements": [
+        { "type": "Control", "scope": "#/properties/brand" },
+        { "type": "Control", "scope": "#/properties/domain" },
+        { "type": "Control", "scope": "#/properties/logo" },
+        { "type": "Control", "scope": "#/properties/tagline" }
+      ]
+    },
+    {
+      "type": "VerticalLayout",
+      "elements": [
+        { "type": "Control", "scope": "#/properties/siteName" },
+        { "type": "Control", "scope": "#/properties/searchParam" },
+        { "type": "Control", "scope": "#/properties/social" },
+        { "type": "Control", "scope": "#/properties/heroImg" },
+        { "type": "Control", "scope": "#/properties/lang" }
+      ]
+    }
+  ]
+}
