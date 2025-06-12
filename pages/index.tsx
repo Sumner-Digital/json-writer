@@ -74,7 +74,7 @@ const Home: NextPage = () => {
   useEffect(() => {
     if (templateId === 'home') {
       try {
-        console.log('Answers object:', answers); // Log the answers object
+        console.log('Answers object before makeHomepageLd:', answers); // Log the answers object
         const generatedLd = JSON.stringify(makeHomepageLd(answers), null, 2);
         console.log('Generated JSON-LD string:', generatedLd); // Log the generated JSON string
         setJsonLd(generatedLd);
