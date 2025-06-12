@@ -5,7 +5,7 @@ import Layout from '../src/components/Layout';
 import TemplatePicker from '../src/components/TemplatePicker';
 import TemplateForm from '../src/components/TemplateForm';
 import JsonPreview from '../src/components/JsonPreview';
-import { makeHomepageLd, Answers as HomepageAnswers } from '../templates/homepage'; // Assuming Answers is exported from homepage.ts
+import { makeHomepageLd } from '../templates/homepage';
 
 // Import schemas (assuming they are JSON files)
 import homepageSchema from '../schemas/homepage.schema.json';
@@ -14,22 +14,56 @@ import homepageUiSchema from '../schemas/homepage.ui.json';
 // Define a type for validation results
 
 // Define a type for the different template answers
-type Answers = HomepageAnswers; // For now, only homepage answers are defined
+type Answers = any; // Use any as the specific Answers interface was removed
 
 const Home: NextPage = () => {
   const [step, setStep] = useState<number>(1);
   const [templateId, setTemplateId] = useState<string | null>(null);
-  const [answers, setAnswers] = useState<Answers>({} as Answers); // Initialize with empty object cast to Answers
+  // Function to generate default answers based on the schema
+  const generateDefaultAnswers = (): any => {
+    const defaultAnswers: any = {};
+    if (homepageSchema && homepageSchema.properties) {
+      Object.keys(homepageSchema.properties).forEach(key => {
+        const property = (homepageSchema.properties as any)[key];
+        if (property.type === 'string') {
+          defaultAnswers[key] = '';
+        } else if (property.type === 'array') {
+          defaultAnswers[key] = [];
+        } else if (property.type === 'boolean') {
+          defaultAnswers[key] = false;
+        } else if (property.type === 'number' || property.type === 'integer') {
+          defaultAnswers[key] = 0; // Or a more appropriate default number
+        } else if (property.enum && property.enum.length > 0) {
+           defaultAnswers[key] = property.enum[0]; // Use the first enum value as default
+        }
+        // Add more types as needed
+      });
+    }
+    return defaultAnswers as Answers;
+  };
+
+  const [answers, setAnswers] = useState<any>(generateDefaultAnswers()); // Initialize with default answers
   const [jsonLd, setJsonLd] = useState<string>('');
   const [showToast, setShowToast] = useState<boolean>(false);
 
   // Load answers from localStorage on mount
+  // Load answers from localStorage on mount and merge with defaults
   useEffect(() => {
     const savedAnswers = localStorage.getItem('answers');
+    const defaultAnswers = generateDefaultAnswers(); // Generate defaults
     if (savedAnswers) {
-      setAnswers(JSON.parse(savedAnswers));
+      try {
+        const parsedAnswers = JSON.parse(savedAnswers);
+        // Merge saved answers with defaults, saved answers take precedence
+        setAnswers({ ...defaultAnswers, ...parsedAnswers });
+      } catch (error) {
+        console.error('Error parsing saved answers from localStorage:', error);
+        setAnswers(defaultAnswers); // Fallback to defaults on error
+      }
+    } else {
+      setAnswers(defaultAnswers); // Use defaults if no saved answers
     }
-  }, []);
+  }, []); // Empty dependency array means this effect runs only once on mount
 
   // Save answers to localStorage whenever they change
   useEffect(() => {
@@ -40,11 +74,13 @@ const Home: NextPage = () => {
   useEffect(() => {
     if (templateId === 'home') {
       try {
+        console.log('Answers object:', answers); // Log the answers object
         const generatedLd = JSON.stringify(makeHomepageLd(answers), null, 2);
+        console.log('Generated JSON-LD string:', generatedLd); // Log the generated JSON string
         setJsonLd(generatedLd);
 
       } catch (error) {
-        console.error('Error generating or validating JSON-LD:', error);
+        console.error('Error generating JSON-LD:', error); // Simplified log message
         setJsonLd('Error generating JSON-LD.');
       }
     } else {
@@ -59,13 +95,14 @@ const Home: NextPage = () => {
   const handleTemplateSelect = useCallback((id: string) => {
     setTemplateId(id);
     setStep(3);
+    console.log('Template selected, templateId:', id);
     // Reset answers when template changes? Or load defaults?
     // For now, let's keep existing answers, but a more robust solution might load template-specific defaults.
     // setAnswers({} as Answers); // Optional: reset answers
   }, []);
 
-  const handleFormChange = useCallback((newData: object) => {
-    setAnswers(newData as Answers);
+  const handleFormChange = useCallback((newData: any) => {
+    setAnswers(newData);
   }, []);
 
   const handleCopyJson = useCallback(() => {
@@ -146,25 +183,28 @@ const Home: NextPage = () => {
       )}
 
       {step === 3 && templateId && currentSchema && currentUiSchema && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <h2 className="text-xl font-bold mb-2">Enter Details</h2>
-            <TemplateForm
-              schema={currentSchema}
-              uischema={currentUiSchema}
-              data={answers}
-              onChange={handleFormChange}
-            />
-          </div>
-          <div>
-            <h2 className="text-xl font-bold mb-2">JSON-LD Preview</h2>
-            <JsonPreview value={JSON.parse(jsonLd || '{}')} onCopy={handleCopyJson} />
-            <div className="mt-4 flex gap-2">
-              <button type="button" className="accent-text" onClick={handleDownloadJson}>Download .json</button>
-              <button type="button" className="accent-text" onClick={handleEmailJson}>Email to dev</button>
+        <>
+          {console.log('Rendering TemplateForm with:', { templateId, currentSchema, currentUiSchema })}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <h2 className="text-xl font-bold mb-2">Enter Details</h2>
+              <TemplateForm
+                schema={currentSchema}
+                uischema={currentUiSchema}
+                data={answers}
+                onChange={handleFormChange}
+              />
+            </div>
+            <div>
+              <h2 className="text-xl font-bold mb-2">JSON-LD Preview</h2>
+              <JsonPreview value={JSON.parse(jsonLd || '{}')} onCopy={handleCopyJson} />
+              <div className="mt-4 flex gap-2">
+                <button type="button" className="accent-text" onClick={handleDownloadJson}>Download .json</button>
+                <button type="button" className="accent-text" onClick={handleEmailJson}>Email to dev</button>
+              </div>
             </div>
           </div>
-        </div>
+        </>
       )}
 
       {/* Toast Notification */}

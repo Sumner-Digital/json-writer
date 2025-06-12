@@ -3,53 +3,208 @@
   "type": "object",
   "properties": {
     "brand": {
-      "type": "string"
+      "type": "string",
+      "description": "Your company or organization name"
     },
     "domain": {
       "type": "string",
-      "format": "uri"
+      "format": "uri",
+      "description": "Your website URL (e.g., https://example.com)"
     },
     "logo": {
       "type": "string",
-      "format": "uri"
+      "format": "uri",
+      "description": "URL to your logo image"
     },
     "tagline": {
       "type": "string",
-      "maxLength": 160
+      "maxLength": 160,
+      "description": "A short description of your business (max 160 characters)"
+    },
+    "@type": {
+      "type": "string",
+      "description": "Schema.org type (e.g., Organization, LocalBusiness)"
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "Contact email address"
+    },
+    "telephone": {
+      "type": "string",
+      "description": "Contact phone number"
+    },
+    "address": {
+      "type": "object",
+      "properties": {
+        "streetAddress": {
+          "type": "string",
+          "description": "Street number and name"
+        },
+        "addressLocality": {
+          "type": "string",
+          "description": "City"
+        },
+        "addressRegion": {
+          "type": "string",
+          "description": "State or province"
+        },
+        "postalCode": {
+          "type": "string",
+          "description": "ZIP or postal code"
+        },
+        "addressCountry": {
+          "type": "string",
+          "description": "Country"
+        }
+      }
+    },
+    "foundingDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Date the organization was founded"
+    },
+    "founder": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the founder"
+        }
+      }
+    },
+    "alternateName": {
+      "type": "string",
+      "description": "Alternative name or DBA"
+    },
+    "award": {
+      "type": "string",
+      "description": "Awards or recognitions received"
+    },
+    "hasMap": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL to a map of your location"
     },
     "siteName": {
-      "type": "string"
+      "type": "string",
+      "description": "The name of your website"
     },
     "searchParam": {
       "type": "string",
-      "pattern": "^\\?[^=]+=?$"
+      "description": "Search query parameter name"
     },
     "social": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "format": "uri"
-      }
+      "type": "string",
+      "description": "Social media profiles"
     },
     "heroImg": {
       "type": "string",
-      "format": "uri"
+      "format": "uri",
+      "description": "URL to hero/banner image"
     },
     "lang": {
       "type": "string",
-      "enum": [
-        "en",
-        "es",
-        "fr",
-        "de",
-        "it",
-        "pt",
-        "ru",
-        "ja",
-        "zh",
-        "ar",
-        "hi"
-      ]
+      "description": "Language code (e.g., en, es, fr)"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed description of your organization"
+    },
+    "publisher": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Publisher name"
+        },
+        "@type": {
+          "type": "string",
+          "description": "Publisher type (e.g., Organization)"
+        },
+        "logo": {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string",
+              "format": "uri",
+              "description": "Publisher logo URL"
+            }
+          }
+        }
+      }
+    },
+    "copyrightHolder": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Copyright holder name"
+        }
+      }
+    },
+    "copyrightYear": {
+      "type": "string",
+      "pattern": "^\\d{4}$",
+      "description": "Copyright year (4 digits)"
+    },
+    "datePublished": {
+      "type": "string",
+      "format": "date",
+      "description": "Date content was published"
+    },
+    "dateModified": {
+      "type": "string",
+      "format": "date",
+      "description": "Date content was last modified"
+    },
+    "webPage": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Web page title"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Web page URL"
+        },
+        "description": {
+          "type": "string",
+          "description": "Web page description"
+        },
+        "breadcrumb": {
+          "type": "string",
+          "description": "Breadcrumb navigation"
+        },
+        "mainEntityOfPage": {
+          "type": "string",
+          "description": "Main entity of the page"
+        }
+      }
+    },
+    "contactPoint": {
+      "type": "object",
+      "properties": {
+        "contactType": {
+          "type": "string",
+          "description": "Type of contact (e.g., customer service)"
+        },
+        "telephone": {
+          "type": "string",
+          "description": "Contact phone number"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Contact email"
+        },
+        "areaServed": {
+          "type": "string",
+          "description": "Geographic area served"
+        }
+      }
     }
   },
   "required": [
@@ -58,7 +213,6 @@
     "logo",
     "tagline",
     "siteName",
-    "searchParam",
     "lang"
   ],
   "additionalProperties": false

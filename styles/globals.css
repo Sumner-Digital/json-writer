@@ -26,3 +26,141 @@
 .highlight-orange-glass {
   color: var(--orange-glass-highlight);
 }
+
+/* Form Styling */
+.form-group {
+  margin-bottom: 1rem; /* Space between form groups */
+}
+
+.form-label {
+  display: block; /* Labels on their own line */
+  margin-bottom: 0.5rem; /* Space between label and input */
+  font-weight: bold;
+}
+
+.form-input {
+  width: 100%; /* Full width inputs */
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+}
+
+.form-error {
+  color: #dc3545; /* Red color for errors */
+  font-size: 0.875rem; /* Smaller font size for errors */
+  margin-top: 0.25rem; /* Space above error message */
+}
+
+/* Form Help Text Styling */
+.ajv-form-text,
+.jsonforms-description,
+.description,
+.help-text,
+.MuiFormHelperText-root,
+.form-description {
+  color: #6b7280; /* A muted gray color for help text */
+  font-size: 0.875rem; /* 14px - readable but smaller than main text */
+  margin-top: 0.25rem; /* Space above help text */
+  margin-bottom: 0; /* No space below to keep form compact */
+  display: block !important; /* Ensure it's visible and on its own line */
+  visibility: visible !important; /* Ensure it's not hidden */
+  line-height: 1.4; /* Comfortable line height for readability */
+  opacity: 1 !important; /* Ensure full visibility */
+}
+
+/* Ensure help text within JSONForms specific containers is visible */
+.jsonforms-control .jsonforms-description,
+.jsonforms-control .description,
+.jsonforms-control .help-text {
+  display: block !important;
+  visibility: visible !important;
+}
+
+/* Responsive adjustments for help text */
+@media (max-width: 640px) {
+  .ajv-form-text,
+  .jsonforms-description,
+  .description,
+  .help-text,
+  .MuiFormHelperText-root,
+  .form-description {
+    font-size: 0.813rem; /* Slightly smaller on mobile */
+  }
+}
+
+/* Custom JSONForms Control Styles */
+.control {
+  margin-bottom: 1.5rem;
+}
+
+.control-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.control-label .error-mark {
+  color: #ef4444;
+  margin-left: 0.25rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #ff9f43;
+  box-shadow: 0 0 0 3px rgba(255, 159, 67, 0.1);
+}
+
+.form-control:disabled {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+}
+
+.validation-error {
+  color: #ef4444;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.form-button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.form-button-primary {
+  background-color: #007bff; /* Example primary color */
+  color: white;
+}
+
+.form-button-primary:hover {
+  background-color: #0056b3;
+}
+
+.form-button-secondary {
+  background-color: #6c757d; /* Example secondary color */
+  color: white;
+}
+
+.form-button-secondary:hover {
+  background-color: #5a6268;
+}
+
+.form-buttons-container {
+  display: flex;
+  gap: 1rem; /* Space between buttons */
+  margin-top: 1rem; /* Space above buttons */
+  justify-content: flex-end; /* Align buttons to the right */
+}
