@@ -22,27 +22,35 @@ const Home: NextPage = () => {
   // Function to generate default answers based on the schema
   const generateDefaultAnswers = (): any => {
     const defaultAnswers: any = {};
-    if (homepageSchema && homepageSchema.properties) {
-      Object.keys(homepageSchema.properties).forEach(key => {
-        const property = (homepageSchema.properties as any)[key];
-        if (property.type === 'string') {
-          defaultAnswers[key] = '';
-        } else if (property.type === 'array') {
-          defaultAnswers[key] = [];
-        } else if (property.type === 'boolean') {
-          defaultAnswers[key] = false;
-        } else if (property.type === 'number' || property.type === 'integer') {
-          defaultAnswers[key] = 0; // Or a more appropriate default number
-        } else if (property.enum && property.enum.length > 0) {
-           defaultAnswers[key] = property.enum[0]; // Use the first enum value as default
-        }
-        // Add more types as needed
-      });
+    try {
+      if (homepageSchema && typeof homepageSchema === 'object' && homepageSchema.properties) {
+        Object.keys(homepageSchema.properties).forEach(key => {
+          const property = (homepageSchema.properties as any)[key];
+          if (!property || typeof property !== 'object') return;
+          
+          if (property.type === 'string') {
+            defaultAnswers[key] = '';
+          } else if (property.type === 'array') {
+            defaultAnswers[key] = [];
+          } else if (property.type === 'boolean') {
+            defaultAnswers[key] = false;
+          } else if (property.type === 'number' || property.type === 'integer') {
+            defaultAnswers[key] = 0; // Or a more appropriate default number
+          } else if (property.type === 'object') {
+            defaultAnswers[key] = {};
+          } else if (property.enum && Array.isArray(property.enum) && property.enum.length > 0) {
+             defaultAnswers[key] = property.enum[0]; // Use the first enum value as default
+          }
+          // Add more types as needed
+        });
+      }
+    } catch (error) {
+      console.error('Error generating default answers:', error);
     }
     return defaultAnswers as Answers;
   };
 
-  const [answers, setAnswers] = useState<any>(generateDefaultAnswers()); // Initialize with default answers
+  const [answers, setAnswers] = useState<any>(() => generateDefaultAnswers()); // Initialize with default answers using lazy initial state
   const [jsonLd, setJsonLd] = useState<string>('');
   const [showToast, setShowToast] = useState<boolean>(false);
 
@@ -75,13 +83,15 @@ const Home: NextPage = () => {
     if (templateId === 'home') {
       try {
         console.log('Answers object before makeHomepageLd:', answers); // Log the answers object
-        const generatedLd = JSON.stringify(makeHomepageLd(answers), null, 2);
+        const ldData = makeHomepageLd(answers);
+        const generatedLd = JSON.stringify(ldData, null, 2);
         console.log('Generated JSON-LD string:', generatedLd); // Log the generated JSON string
         setJsonLd(generatedLd);
 
       } catch (error) {
         console.error('Error generating JSON-LD:', error); // Simplified log message
-        setJsonLd('Error generating JSON-LD.');
+        // Set valid empty JSON instead of error string
+        setJsonLd('{}');
       }
     } else {
       setJsonLd('');
@@ -153,8 +163,19 @@ const Home: NextPage = () => {
   }, []);
 
   // Determine which schema and uischema to use based on templateId
-  const currentSchema = templateId === 'home' ? homepageSchema : null;
-  const currentUiSchema = templateId === 'home' ? homepageUiSchema : null;
+  const currentSchema = templateId === 'home' && homepageSchema ? homepageSchema : null;
+  const currentUiSchema = templateId === 'home' && homepageUiSchema ? homepageUiSchema : null;
+  
+  // Parse JSON safely
+  const parsedJsonLd = React.useMemo(() => {
+    if (!jsonLd || jsonLd === '{}') return {};
+    try {
+      return JSON.parse(jsonLd);
+    } catch (error) {
+      console.error('Error parsing JSON-LD:', error);
+      return {};
+    }
+  }, [jsonLd]);
 
   return (
     <Layout>
@@ -197,10 +218,10 @@ const Home: NextPage = () => {
             </div>
             <div>
               <h2 className="text-xl font-bold mb-2">JSON-LD Preview</h2>
-              <JsonPreview value={JSON.parse(jsonLd || '{}')} onCopy={handleCopyJson} />
+              <JsonPreview value={parsedJsonLd} onCopy={handleCopyJson} />
               <div className="mt-4 flex gap-2">
-                <button type="button" className="accent-text" onClick={handleDownloadJson}>Download .json</button>
-                <button type="button" className="accent-text" onClick={handleEmailJson}>Email to dev</button>
+                <button type="button" className="accent-text" onClick={handleDownloadJson} disabled={!jsonLd || jsonLd === '{}'}>Download .json</button>
+                <button type="button" className="accent-text" onClick={handleEmailJson} disabled={!jsonLd || jsonLd === '{}'}>Email to dev</button>
               </div>
             </div>
           </div>
