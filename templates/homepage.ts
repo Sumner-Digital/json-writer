@@ -12,6 +12,10 @@ function isEmpty(value: any): boolean {
 
 // Helper function to build schema objects conditionally
 function buildSchemaObject(obj: any): any | undefined {
+  if (!obj || typeof obj !== 'object') {
+    return undefined;
+  }
+  
   const result: any = {};
   let hasContent = false;
 

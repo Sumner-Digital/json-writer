@@ -7,13 +7,17 @@
       "description": "Your company or organization name"
     },
     "domain": {
-      "type": "string",
-      "format": "uri",
+      "anyOf": [
+        { "type": "string", "maxLength": 0 },
+        { "type": "string", "format": "uri" }
+      ],
       "description": "Your website URL (e.g., https://example.com)"
     },
     "logo": {
-      "type": "string",
-      "format": "uri",
+      "anyOf": [
+        { "type": "string", "maxLength": 0 },
+        { "type": "string", "format": "uri" }
+      ],
       "description": "URL to your logo image"
     },
     "tagline": {
@@ -26,8 +30,10 @@
       "description": "Schema.org type (e.g., Organization, LocalBusiness)"
     },
     "email": {
-      "type": "string",
-      "format": "email",
+      "anyOf": [
+        { "type": "string", "maxLength": 0 },
+        { "type": "string", "format": "email" }
+      ],
       "description": "Contact email address"
     },
     "telephone": {
@@ -60,8 +66,10 @@
       }
     },
     "foundingDate": {
-      "type": "string",
-      "format": "date",
+      "anyOf": [
+        { "type": "string", "maxLength": 0 },
+        { "type": "string", "format": "date" }
+      ],
       "description": "Date the organization was founded"
     },
     "founder": {
@@ -82,8 +90,10 @@
       "description": "Awards or recognitions received"
     },
     "hasMap": {
-      "type": "string",
-      "format": "uri",
+      "anyOf": [
+        { "type": "string", "maxLength": 0 },
+        { "type": "string", "format": "uri" }
+      ],
       "description": "URL to a map of your location"
     },
     "siteName": {
@@ -95,12 +105,14 @@
       "description": "Search query parameter name"
     },
     "social": {
-      "type": "string",
+       "type": "string",
       "description": "Social media profiles"
     },
     "heroImg": {
-      "type": "string",
-      "format": "uri",
+      "anyOf": [
+        { "type": "string", "maxLength": 0 },
+        { "type": "string", "format": "uri" }
+      ],
       "description": "URL to hero/banner image"
     },
     "lang": {
@@ -126,8 +138,10 @@
           "type": "object",
           "properties": {
             "url": {
-              "type": "string",
-              "format": "uri",
+              "anyOf": [
+                { "type": "string", "maxLength": 0 },
+                { "type": "string", "format": "uri" }
+              ],
               "description": "Publisher logo URL"
             }
           }
@@ -144,18 +158,24 @@
       }
     },
     "copyrightYear": {
-      "type": "string",
-      "pattern": "^\\d{4}$",
+      "anyOf": [
+        { "type": "string", "maxLength": 0 },
+        { "type": "string", "pattern": "^\\d{4}$" }
+      ],
       "description": "Copyright year (4 digits)"
     },
     "datePublished": {
-      "type": "string",
-      "format": "date",
+      "anyOf": [
+        { "type": "string", "maxLength": 0 },
+        { "type": "string", "format": "date" }
+      ],
       "description": "Date content was published"
     },
     "dateModified": {
-      "type": "string",
-      "format": "date",
+      "anyOf": [
+        { "type": "string", "maxLength": 0 },
+        { "type": "string", "format": "date" }
+      ],
       "description": "Date content was last modified"
     },
     "webPage": {
@@ -166,8 +186,10 @@
           "description": "Web page title"
         },
         "url": {
-          "type": "string",
-          "format": "uri",
+          "anyOf": [
+            { "type": "string", "maxLength": 0 },
+            { "type": "string", "format": "uri" }
+          ],
           "description": "Web page URL"
         },
         "description": {
@@ -196,8 +218,10 @@
           "description": "Contact phone number"
         },
         "email": {
-          "type": "string",
-          "format": "email",
+          "anyOf": [
+            { "type": "string", "maxLength": 0 },
+            { "type": "string", "format": "email" }
+          ],
           "description": "Contact email"
         },
         "areaServed": {
@@ -207,13 +231,6 @@
       }
     }
   },
-  "required": [
-    "brand",
-    "domain",
-    "logo",
-    "tagline",
-    "siteName",
-    "lang"
-  ],
+  "required": [],
   "additionalProperties": false
 }

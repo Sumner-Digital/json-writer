@@ -16,7 +16,7 @@ const JsonPreview: FC<JsonPreviewProps> = ({ value, onCopy }) => {
       ></pre>
       <button
         type="button"
-        className="mt-2 accent-text"
+        className="liquid-button"
         onClick={onCopy}
       >
         Copy JSON
