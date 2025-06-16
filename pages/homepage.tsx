@@ -135,8 +135,8 @@ const HomePage: NextPage = () => {
       </Head>
 
       <div className="mb-6">
-        <h1 className="text-3xl font-bold mb-2">Fill Out and the json cocde is at the bottom of the page.</h1>
-        <p className="text-gray-600">You Don't have to Fill Every Question the Code Will Just Write Out What You've Filled In</p>
+        <h1 className="text-3xl font-bold mb-2">Fill Out the Form and the JSON Code is at the Bottom of the Page.</h1>
+        <p className="text-gray-600">You Don't have to Fill Every Question Out the Code Will Just Write Out What You've Filled In</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
