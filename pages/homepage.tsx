@@ -130,16 +130,19 @@ const HomePage: NextPage = () => {
 
   return (
     <Layout>
+    
       <Head>
-        <title>Website HQ JSON-LD Generator</title>
+      
+        <title >Website HQ JSON-LD Generator</title>
+        
       </Head>
 
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold mb-2">Fill Out the Form and the JSON Code is at the Bottom of the Page.</h1>
-        <p className="text-gray-600">You Don't have to Fill Every Question Out the Code Will Just Write Out What You've Filled In</p>
+      <div className="mb-6 text-center">
+        <h1 className="text-3xl font-bold mb-2">Fill Out the Form and the JSON Code will Magically Appear on the right.</h1>
+        <p className="text-gray-600 bottom-margin-70">You Don't have to Fill Every Question Out the Code Will Just Write Out What You've Filled In</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="responsive-grid">
         <div>
           <h2 className="text-xl font-bold mb-2">Enter Details</h2>
           <TemplateForm
@@ -149,7 +152,7 @@ const HomePage: NextPage = () => {
             onChange={handleFormChange}
           />
         </div>
-        <div>
+        <div  className="glass-background top-margin-80">
           <h2 className="text-xl font-bold mb-2">JSON-LD Preview</h2>
           <JsonPreview value={parsedJsonLd} onCopy={handleCopyJson} />
           <div className="mt-4 flex gap-2">

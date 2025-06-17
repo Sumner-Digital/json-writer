@@ -13,11 +13,11 @@ const Layout: FC<LayoutProps> = ({ children }) => {
       </Head>
       <div className="max-w-4xl mx-auto p-4">
         <header className="glass mb-4 p-4 rounded">
-          <h1 className="text-2xl font-bold">JSON-LD Generator</h1>
+          {/* Removed the visual title */}
         </header>
         <main>{children}</main>
         <footer className="mt-4 text-center text-sm text-gray-500">
-          &copy; {new Date().getFullYear()} JSON-LD Generator
+          &copy; {new Date().getFullYear()} Sumner Digital
         </footer>
       </div>
     </>

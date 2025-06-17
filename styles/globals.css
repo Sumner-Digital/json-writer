@@ -1,6 +1,46 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+
+html, body {
+  font-family: 'Poppins', sans-serif;
+}
+.bottom-margin-70{
+  margin-bottom: 70px;
+}
+
+.top-margin-80 {
+  margin-top: 80px;
+} 
+
+
+/* Light mode gradient */
+body {
+  background: linear-gradient(135deg, #ffffff, #fffdfd);
+}
+
+/* Dark mode gradient */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: linear-gradient(135deg, #232526, #414345);
+  }
+
+ 
+}
+
+
+.glass-background {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 20px;
+}
+
 
 
 .liquid-button {
@@ -124,7 +164,7 @@
   .help-text,
   .MuiFormHelperText-root,
   .form-description {
-    font-size: 0.813rem; /* Slightly smaller on mobile */
+    font-size: 18px; /* Slightly smaller on mobile */
   }
 }
 
@@ -135,7 +175,7 @@
 
 .control-label {
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 10px;
   font-weight: 500;
   color: #374151;
 }
@@ -146,8 +186,8 @@
 }
 
 .form-control {
-  width: 50%;
-  min-width: 400px; /* Minimum width for larger screens */
+  width: 70%;
+
   padding: 0.5rem 0.75rem;
   border: 1px solid #d1d5db;
   border-radius: 0.375rem;
@@ -204,4 +244,29 @@
   gap: 1rem; /* Space between buttons */
   margin-top: 1rem; /* Space above buttons */
   justify-content: flex-end; /* Align buttons to the right */
+}
+
+/* Responsive Two Column Layout */
+.responsive-grid {
+   display: grid;
+ grid-template-columns: 1fr auto; /* left expands fully, right sized by content */
+  gap: 1rem; /* adjust white-space gap as needed */
+  width: 100%;
+  max-width: 1200px; /* optional, controls overall width */
+  margin: 0 auto; /* ensures horizontal centering of entire grid */
+}
+
+.responsive-grid > div:first-child {
+  width: 100%; /* explicitly expands left-side form to fill available space */
+}
+
+.responsive-grid > div:last-child {
+  align-self: start; /* aligns the right-side JSON preview neatly at top */
+}
+
+
+@media (min-width: 768px) {
+  .responsive-grid {
+    grid-template-columns: 1fr auto;
+  }
 }
