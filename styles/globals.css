@@ -270,3 +270,38 @@ body {
     grid-template-columns: 1fr auto;
   }
 }
+
+
+/* Define defaults for both themes */
+:root {
+  --text-color: #050505;
+  --help-text-color: #6b7280; /* your gray help text */
+}
+
+/* Apply variables */
+body {
+  color: var(--text-color);
+}
+
+/* Override in dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text-color: #f9f9f9;
+    --help-text-color: #a1a1a1;
+  }
+
+  /* Ensure your UI-help text updates too */
+  .ajv-form-text,
+  .jsonforms-description,
+  .description,
+  .help-text,
+  .MuiFormHelperText-root,
+  .form-description {
+    color: var(--help-text-color);
+  }
+}
+
+/* Optional: inline headings or labels too */
+h1, h2, h3, .form-label, .control-label {
+  color: var(--text-color);
+}
