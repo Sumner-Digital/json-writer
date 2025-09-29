@@ -17,7 +17,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
         </header>
         <main>{children}</main>
         <footer className="mt-4 text-center text-sm text-gray-500">
-          &copy; {new Date().getFullYear()} Sumner Digital
+          &copy; {new Date().getFullYear()} Website HQ
         </footer>
       </div>
     </>

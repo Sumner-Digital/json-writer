@@ -84,23 +84,31 @@ const HomePage: NextPage = () => {
     setAnswers(newData);
   }, []);
 
+  // Updated to copy with script tags
   const handleCopyJson = useCallback(() => {
     if (navigator.clipboard && jsonLd) {
-      navigator.clipboard.writeText(jsonLd).then(() => {
-        console.log('JSON-LD copied to clipboard');
+      const htmlSnippet = `<script type="application/ld+json">
+${jsonLd}
+</script>`;
+      navigator.clipboard.writeText(htmlSnippet).then(() => {
+        console.log('HTML snippet copied to clipboard');
       }).catch(err => {
-        console.error('Failed to copy JSON-LD:', err);
+        console.error('Failed to copy HTML snippet:', err);
       });
     }
   }, [jsonLd]);
 
+  // Updated to download as HTML file with script tags
   const handleDownloadJson = useCallback(() => {
     if (jsonLd) {
-      const blob = new Blob([jsonLd], { type: 'application/json' });
+      const htmlSnippet = `<script type="application/ld+json">
+${jsonLd}
+</script>`;
+      const blob = new Blob([htmlSnippet], { type: 'text/html' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'homepage-json-ld.json';
+      a.download = 'homepage-schema.html';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -108,10 +116,18 @@ const HomePage: NextPage = () => {
     }
   }, [jsonLd]);
 
+  // Updated to include script tags in email
   const handleEmailJson = useCallback(() => {
     if (jsonLd) {
-      const subject = 'JSON-LD for Homepage';
-      const body = `Please find the generated JSON-LD below:\n\n${jsonLd}`;
+      const htmlSnippet = `<script type="application/ld+json">
+${jsonLd}
+</script>`;
+      const subject = 'JSON-LD Schema for Homepage';
+      const body = `Please add this HTML snippet to your website's <head> section:
+
+${htmlSnippet}
+
+This structured data helps search engines understand your website content better.`;
       const encodedBody = encodeURIComponent(body);
       window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodedBody}`;
     }
@@ -133,13 +149,13 @@ const HomePage: NextPage = () => {
     
       <Head>
       
-        <title >Website HQ JSON-LD Generator</title>
+        <title >JSON-LD Schema Generator</title>
         
       </Head>
 
       <div className="mb-6 text-center">
-        <h1 className="text-3xl font-bold mb-2">Fill Out the Form and the JSON Code will Magically Appear on the right.</h1>
-        <p className="text-gray-600 bottom-margin-70">You Don't have to Fill Every Question Out the Code Will Just Write Out What You've Filled In</p>
+        <h1 className="text-3xl font-bold mb-2">Fill Out the Form to Generate Your Schema Snippet.</h1>
+        <p className="text-gray-600 bottom-margin-70">You don't have to complete every field, but the more detailed the better.</p>
       </div>
 
       <div className="responsive-grid">
@@ -153,11 +169,11 @@ const HomePage: NextPage = () => {
           />
         </div>
         <div  className="glass-background top-margin-80">
-          <h2 className="text-xl font-bold mb-2">JSON-LD Preview</h2>
+          <h2 className="text-xl font-bold mb-2">JSON-LD Schema Preview</h2>
           <JsonPreview value={parsedJsonLd} onCopy={handleCopyJson} />
           <div className="mt-4 flex gap-2">
             <button type="button" className="liquid-button" onClick={handleDownloadJson} disabled={!jsonLd || jsonLd === '{}'}>
-              Download .json
+              Download .html
             </button>
             <button type="button" className="liquid-button" onClick={handleEmailJson} disabled={!jsonLd || jsonLd === '{}'}>
               Email to dev

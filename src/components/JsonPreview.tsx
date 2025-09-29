@@ -8,7 +8,15 @@ interface JsonPreviewProps {
 
 const JsonPreview: FC<JsonPreviewProps> = ({ value, onCopy }) => {
   const jsonString = JSON.stringify(value, null, 2);
-  const highlighted = hljs.highlightAuto(jsonString).value;
+  
+  // Create the full HTML snippet with script tags
+  const htmlSnippet = `<script type="application/ld+json">
+${jsonString}
+</script>`;
+  
+  // Highlight the entire HTML snippet
+  const highlighted = hljs.highlightAuto(htmlSnippet, ['html', 'xml']).value;
+  
   return (
     <div className="glass p-4">
       <pre
@@ -19,7 +27,7 @@ const JsonPreview: FC<JsonPreviewProps> = ({ value, onCopy }) => {
         className="liquid-button"
         onClick={onCopy}
       >
-        Copy JSON
+        Copy HTML Snippet
       </button>
     </div>
   );
