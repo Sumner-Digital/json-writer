@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Layout from '../src/components/Layout';
 import TemplateForm from '../src/components/TemplateForm';
 import JsonPreview from '../src/components/JsonPreview';
+import IframeResizer from '../src/components/IframeResizer';
 import { makeHomepageLd } from '../templates/homepage';
 
 // Import schemas
@@ -146,6 +147,7 @@ This structured data helps search engines understand your website content better
 
   return (
     <Layout>
+      <IframeResizer />
     
       <Head>
       
