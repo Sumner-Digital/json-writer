@@ -85,17 +85,66 @@ const HomePage: NextPage = () => {
     setAnswers(newData);
   }, []);
 
-  // Updated to copy with script tags
+  // Updated to copy with script tags - with iframe fallback
   const handleCopyJson = useCallback(() => {
-    if (navigator.clipboard && jsonLd) {
-      const htmlSnippet = `<script type="application/ld+json">
+    if (!jsonLd) return;
+    
+    const htmlSnippet = `<script type="application/ld+json">
 ${jsonLd}
 </script>`;
-      navigator.clipboard.writeText(htmlSnippet).then(() => {
-        console.log('HTML snippet copied to clipboard');
-      }).catch(err => {
-        console.error('Failed to copy HTML snippet:', err);
-      });
+    
+    // Try modern clipboard API first
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(htmlSnippet)
+        .then(() => {
+          console.log('HTML snippet copied to clipboard');
+          alert('Copied to clipboard!');
+        })
+        .catch((err) => {
+          console.error('Clipboard API failed, trying fallback:', err);
+          // Fallback method for iframes
+          fallbackCopyToClipboard(htmlSnippet);
+        });
+    } else {
+      // Use fallback if clipboard API not available
+      fallbackCopyToClipboard(htmlSnippet);
+    }
+    
+    // Fallback copy method that works in iframes
+    function fallbackCopyToClipboard(text: string) {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.style.position = 'fixed';
+      textArea.style.top = '0';
+      textArea.style.left = '0';
+      textArea.style.width = '2em';
+      textArea.style.height = '2em';
+      textArea.style.padding = '0';
+      textArea.style.border = 'none';
+      textArea.style.outline = 'none';
+      textArea.style.boxShadow = 'none';
+      textArea.style.background = 'transparent';
+      textArea.style.opacity = '0.01';
+      
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      
+      try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+          console.log('Fallback: Copying text command was successful');
+          alert('Copied to clipboard!');
+        } else {
+          console.error('Fallback: Unable to copy');
+          alert('Copy failed. Please try selecting and copying manually.');
+        }
+      } catch (err) {
+        console.error('Fallback: Unable to copy', err);
+        alert('Copy failed. Please try selecting and copying manually.');
+      }
+      
+      document.body.removeChild(textArea);
     }
   }, [jsonLd]);
 

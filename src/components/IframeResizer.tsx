@@ -2,48 +2,60 @@ import { useEffect } from 'react';
 
 const IframeResizer = () => {
   useEffect(() => {
+    let lastHeight = 0;
+    
     // Function to send height to parent window
     const sendHeight = () => {
-      const height = document.documentElement.scrollHeight;
-      // Send message to parent window
-      if (window.parent !== window) {
+      // Get the actual content height (not infinite scrollHeight)
+      const body = document.body;
+      const html = document.documentElement;
+      
+      // Get the actual rendered height
+      const height = Math.max(
+        body.offsetHeight,
+        body.scrollHeight,
+        html.clientHeight,
+        html.offsetHeight
+      );
+      
+      // Only send if height changed and is reasonable
+      if (window.parent !== window && height !== lastHeight && height > 0 && height < 6000) {
+        lastHeight = height;
         window.parent.postMessage(
           {
             type: 'resize-iframe',
             height: height
           },
-          '*' // In production, you might want to specify the exact domain for security
+          '*'
         );
       }
     };
 
-    // Send height on load
-    sendHeight();
-
+    // Send height after content loads
+    setTimeout(sendHeight, 100);
+    
     // Send height on window resize
     window.addEventListener('resize', sendHeight);
-
-    // Watch for content changes using MutationObserver
+    
+    // Watch for form changes (but not too often)
+    let resizeTimeout: NodeJS.Timeout;
     const observer = new MutationObserver(() => {
-      sendHeight();
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(sendHeight, 200);
     });
 
-    // Start observing the document body for changes
+    // Observe the body for changes
     observer.observe(document.body, {
-      attributes: true,
       childList: true,
       subtree: true,
-      characterData: true
+      attributes: true
     });
-
-    // Send height periodically as backup (every 500ms)
-    const interval = setInterval(sendHeight, 500);
 
     // Cleanup
     return () => {
       window.removeEventListener('resize', sendHeight);
       observer.disconnect();
-      clearInterval(interval);
+      clearTimeout(resizeTimeout);
     };
   }, []);
 
