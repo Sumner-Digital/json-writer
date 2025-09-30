@@ -97,11 +97,9 @@ ${jsonLd}
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(htmlSnippet)
         .then(() => {
-          console.log('HTML snippet copied to clipboard');
-          alert('Copied to clipboard!');
+          // Success - silent
         })
         .catch((err) => {
-          console.error('Clipboard API failed, trying fallback:', err);
           // Fallback method for iframes
           fallbackCopyToClipboard(htmlSnippet);
         });
@@ -131,17 +129,9 @@ ${jsonLd}
       textArea.select();
       
       try {
-        const successful = document.execCommand('copy');
-        if (successful) {
-          console.log('Fallback: Copying text command was successful');
-          alert('Copied to clipboard!');
-        } else {
-          console.error('Fallback: Unable to copy');
-          alert('Copy failed. Please try selecting and copying manually.');
-        }
+        document.execCommand('copy');
       } catch (err) {
-        console.error('Fallback: Unable to copy', err);
-        alert('Copy failed. Please try selecting and copying manually.');
+        // Silent fail
       }
       
       document.body.removeChild(textArea);
